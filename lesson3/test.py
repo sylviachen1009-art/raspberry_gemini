@@ -38,22 +38,13 @@ class Filter:
         pass
 
     def inlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
-        #我要取得使用者輸入的內容
-        # Modify the request body or validate it before processing by the chat completion API.
-        # This function is the pre-processor for the API where various checks on the input can be performed.
-        # It can also modify the request before sending it to the API.
-        print(f"inlet:{__name__}")
-        print(f"inlet:body:{body}")
-        print(f"inlet:user:{__user__}")
-
-        if __user__.get("role", "admin") in ["user", "admin"]:
-            messages = body.get("messages", [])
-
-            max_turns = min(__user__["valves"].max_turns, self.valves.max_turns)
-            if len(messages) > max_turns:
-                raise Exception(
-                    f"Conversation turn limit exceeded. Max turns: {max_turns}"
-                )
+        # 取得使用者最後輸入的內容
+        messages = body.get("messages", [])
+        if messages:
+            user_message = messages[-1]
+            print(f"inlet:body:{body}")
+            print(f"inlet:user:{__user__}")
+            print(f"inlet:message:{user_message}")
 
         return body
 
